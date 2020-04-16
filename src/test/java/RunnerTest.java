@@ -218,7 +218,7 @@ public class RunnerTest {
         });
         Runner<Integer> myRunner = new RunnerImpl<>();
         try {
-            final int iterators = 10000;
+            final int iterators = 100000;
             Map<String, List<Integer>> expected = new HashMap<>();
             List<Integer> list1 = new ArrayList<>(iterators);
             List<Integer> list2 = new ArrayList<>(iterators);

@@ -170,6 +170,9 @@ public class RunnerImpl<T> implements Runner<T> {
             for (Node<T> ne : currPair.node.next) {
                 processorsQueue.add(new Pair<>(currPair.iterationNumber, ne));
             }
+            if (currPair.iterationNumber != MAX_PAIRS_COUNT / processors.size() - 1){
+                processorsQueue.add(new Pair<>(currPair.iterationNumber + 1, currPair.node));
+            }
             iterProcessesCounter.addAndGet(1);
             currPair.node.lock.unlock();
         } else if (currPair.node.iterationsCounter.get() < currPair.iterationNumber) {
@@ -201,10 +204,8 @@ public class RunnerImpl<T> implements Runner<T> {
         this.processors = processors;
         createGraph(maxIterations);
         MAX_PAIRS_COUNT = processors.size() * maxIterations;
-        for (int i = 0; i < maxIterations; i++) {
-            for (Node<T> initElem : initials) {
-                processorsQueue.add(new Pair<>(i, initElem));
-            }
+        for (Node<T> initElem : initials) {
+            processorsQueue.add(new Pair<>(0, initElem));
         }
         for (int i = 0; i < maxThreads; i++) {
             threads.add(new Thread(() -> {
